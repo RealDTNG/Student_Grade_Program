@@ -7,7 +7,22 @@ Student_list = [["Dylan","Baker", 98, 90, 92, 93],["Dave","Johnson",67,86,74,93]
     
     
 def add():
-    print("adding students")
+    while True:
+        print("[first name, last name]")
+        new_name = input("Please enter a new name")
+        if new_name.isalpha():
+            print("Please add a comma between first and last name")
+        else:
+            for i, j in enumerate(new_name):
+                if "," in j:
+                    Student_list.append([new_name[:i], new_name[i:]])
+                    print("Sucssesfully Added A Student")
+                    break
+                    list()
+            else:
+                print("Please add a comma between first and last name")
+                break
+            break
     
 def list():
     m_leng = 0
@@ -15,7 +30,7 @@ def list():
         if len(firstn + lastn)> m_leng:
             m_leng = len(firstn + lastn)
     for firstn, lastn, gr1, gr2, gr3, gr4 in Student_list:
-        print(f"{lastn}, {firstn}:{' '*(m_leng + 5 - len(firstn + lastn))}{gr1} {gr2} {gr3} {gr4}")
+        print(f"{lastn}, {firstn}:{' '*(m_leng + 5 - len(firstn + lastn))}{gr1:03}% {gr2:03}% {gr3:03}% {gr4:03}%")
     time.sleep(1)
     input("To Return To Menu Press [Enter]")
     
