@@ -10,24 +10,33 @@ Student_list = [["Dylan", "Baker", 98, 90, 92, 93], ["Dave", "Johnson", 67, 86, 
                 ["Erik", "Lagsaway", 100, 100, 100, 100]]
 
 
+def grade_che(resu):
+    l = range(0,101)
+    for i in resu:
+        if int(i) not in l:
+           return True
+    return False
+
 def grades():
     os.system('cls')
     global results
-    while True:
-        new_grades = input(f"Please enter four grades\n:")
-        if new_grades.isalpha():
-            print("Please add a comma between Grades")
-        else:
-            try:
-                results = new_grades.split(",")
-                if len(results) == 4:
-                    return results
-                else:
+    things = True
+    while things:
+        try:
+            new_grades = input(f"Please enter four grades  ex..[89,92,70,68]\n:")
+            results = new_grades.split(",")
+            print(results)
+            if len(results) == 4:
+                if grade_che(results):
                     raise Exception
-            except:
-                os.system('cls')
-                print("ERROR Please enter a valid input")
-        os.system('cls')
+                else:
+                    things = False
+                    return results
+            else:
+                raise Exception
+        except:
+           # os.system('cls')
+            print("ERROR Please enter a valid four grades (0-100)")
 
 
 def add():
@@ -41,22 +50,19 @@ def add():
             os.system('cls')
             print("Please enter name properly")
         else:
-            for i, j in enumerate(new_name):
-                if "," in j:
-                    grades()
-                    new_name = new_name.replace(" ", "")
-                    Student_list.append(
-                        [new_name[:i], f" {new_name[i + 1:]}", int(results[0]), int(results[1]), int(results[2]),
-                         int(results[3])])
-                    os.system('cls')
-                    print("Successfully Added A Student\n")
-                    time.sleep(2)
-                    os.system('cls')
-                    runing = False
-                    break
-                else:
-                    os.system('cls')
-                    print("Please add a comma between first and last name")
+            new_name = new_name.split(",")
+            grades()
+            Student_list.append(
+                [new_name[1], f" {new_name[0]}", int(results[0]), int(results[1]), int(results[2]),
+                    int(results[3])])
+            os.system('cls')
+            print("Successfully Added A Student\n")
+            time.sleep(2)
+            os.system('cls')
+            runing = False
+            #else:
+               # os.system('cls')
+               # print("Please add a comma between first and last name")
 
 
 def list():
@@ -66,7 +72,7 @@ def list():
         if len(firstn + lastn) > m_leng:
             m_leng = len(firstn + lastn)
     for firstn, lastn, gr1, gr2, gr3, gr4 in Student_list:
-        print(f"{lastn}, {firstn}:{' ' * (m_leng + 5 - len(firstn + lastn))}{gr1:03}% {gr2:03}% {gr3:03}% {gr4:03}%")
+        print(f"{lastn}, {firstn}:{' ' * (m_leng + 5 - len(firstn + lastn))}{gr1}% {gr2}% {gr3}% {gr4}%")
     time.sleep(1)
     input("To Return To Menu Press [Enter]")
     os.system('cls')
