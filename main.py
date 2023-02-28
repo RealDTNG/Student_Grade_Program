@@ -11,11 +11,12 @@ Student_list = [["Dylan", "Baker", 98, 90, 92, 93], ["Dave", "Johnson", 67, 86, 
 
 
 def grade_che(resu):
-    l = range(0,101)
+    l = range(0, 101)
     for i in resu:
         if int(i) not in l:
-           return True
+            return True
     return False
+
 
 def grades():
     os.system('cls')
@@ -35,14 +36,14 @@ def grades():
             else:
                 raise Exception
         except:
-           # os.system('cls')
+            os.system('cls')
             print("ERROR Please enter a valid four grades (0-100)")
 
 
 def add():
     os.system('cls')
-    runing = True
-    while runing:
+    running = True
+    while running:
         print("[First name,Last name]")
         new_name = input(f"\nPlease enter a new name\n:")
         time.sleep(.5)
@@ -59,13 +60,13 @@ def add():
             print("Successfully Added A Student\n")
             time.sleep(2)
             os.system('cls')
-            runing = False
+            running = False
             #else:
                # os.system('cls')
                # print("Please add a comma between first and last name")
 
 
-def list():
+def student_list():
     os.system('cls')
     m_leng = 0
     for firstn, lastn, gr1, gr2, gr3, gr4 in Student_list:
@@ -94,7 +95,7 @@ def exit_G():
     exit()
 
 
-menus = {"1": add, "2": list, "3": student_av, "4": Course_av, "5": exit_G}
+menus = {"1": add, "2": student_list, "3": student_av, "4": Course_av, "5": exit_G}
 while True:
     print(" '1' | To Add Students")
     print(" '2' | To View The List")
