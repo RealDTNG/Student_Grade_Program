@@ -5,9 +5,9 @@
 import os
 import time
 
-Student_list = [["Dylan", "Baker", 98, 90, 92, 93], ["Dave", "Johnson", 67, 86, 74, 93],
-                ["Jacob", "Kakowski", 73, 59, 64, 83], ["JOsh", "Hotter", 51, 57, 53, 99],
-                ["Erik", "Lagsaway", 100, 100, 100, 100]]
+Student_list = [["Dylan", " Baker", 98, 90, 92, 93], ["Dave", " Johnson", 67, 86, 74, 93],
+                ["Jacob", " Kakowski", 73, 59, 64, 83], ["JOsh", " Hotter", 51, 57, 53, 99],
+                ["Erik", " Lagsaway", 100, 100, 100, 100]]
 
 
 def grade_che(resu):
@@ -53,16 +53,13 @@ def add():
             new_name = new_name.split(",")
             grades()
             Student_list.append(
-                [new_name[1], f" {new_name[0]}", int(results[0]), int(results[1]), int(results[2]),
+                [f"{new_name[0]}", f" {new_name[1]}", int(results[0]), int(results[1]), int(results[2]),
                     int(results[3])])
             os.system('cls')
             print("Successfully Added A Student\n")
             time.sleep(2)
             os.system('cls')
             runing = False
-            #else:
-               # os.system('cls')
-               # print("Please add a comma between first and last name")
 
 
 def list():
@@ -78,15 +75,35 @@ def list():
     os.system('cls')
 
 
+def search(arr, x):
+    global spot
+    for i in range(len(arr)):
+        if arr[i] == x:
+            spot = i
+            return  spot
+    return -1 
+
+
 def student_av():
-    os.system('cls')
-    print("student averages")
-
-
+    runing = True
+    while runing:
+        os.system('cls')
+        in_name = input(f"Please enter the student that you would grades for.\n:").capitalize()
+        search(Student_list,in_name)
+        if :
+            print(f"{Student_list[spot][0]}, {Student_list[spot][1]}\nGrade #1: {Student_list[spot][2]}\nGrade #2: {Student_list[spot][3]}\nGrade #3: {Student_list[spot][4]}\nGrade #4: {Student_list[spot][5]}")
+            runing = False
+        else:
+            print("ERROR, Student not found")
+            time.sleep(1)
+            print("Please try again")
+            time.sleep(1.5)
+        
+        
 def Course_av():
     os.system('cls')
     print("course average")
-
+     
 
 def exit_G():
     os.system('cls')
