@@ -5,9 +5,9 @@
 import os
 import time
 
-Student_list = [["Dylan", " Baker", 98, 90, 92, 93], ["Dave", " Johnson", 67, 86, 74, 93],
-                ["Jacob", " Kakowski", 73, 59, 64, 83], ["JOsh", " Hotter", 51, 57, 53, 99],
-                ["Erik", " Lagsaway", 100, 100, 100, 100]]
+Student_list = [["Dylan", "Baker", 98, 90, 92, 93], ["Dave", "Johnson", 67, 86, 74, 93],
+                ["Jacob", "Kakowski", 73, 59, 64, 83], ["Josh", "Hotter", 51, 57, 53, 99],
+                ["Erik", "Lagsaway", 100, 100, 100, 100]]
 
 
 def grade_che(resu):
@@ -41,6 +41,7 @@ def grades():
 
 
 def add():
+    time.sleep(1)
     os.system('cls')
     running = True
     while running:
@@ -54,17 +55,19 @@ def add():
             new_name = new_name.split(",")
             grades()
             Student_list.append(
-                [f"{new_name[0]}", f" {new_name[1]}", int(results[0]), int(results[1]), int(results[2]),
+                [f"{new_name[0].lower().capitalize()}", f"{new_name[1].lower().capitalize()}", int(results[0]), int(results[1]), int(results[2]),
                     int(results[3])])
             os.system('cls')
             print("Successfully Added A Student\n")
+            running = False
             time.sleep(2)
             os.system('cls')
-            runing = False
+            
 
 
 def student_list():
-    os.system('cls')
+    time.sleep(1)
+    os.system('cls') 
     m_leng = 0
     for firstn, lastn, gr1, gr2, gr3, gr4 in Student_list:
         if len(firstn + lastn) > m_leng:
@@ -73,26 +76,39 @@ def student_list():
         print(f"{lastn}, {firstn}:{' ' * (m_leng + 5 - len(firstn + lastn))}{gr1}% {gr2}% {gr3}% {gr4}%")
     time.sleep(1)
     input("To Return To Menu Press [Enter]")
+    time.sleep(1)
     os.system('cls')
 
 
-def search(arr, x):
+def search(arr, x, y):
     global spot
     for i in range(len(arr)):
-        if arr[i] == x:
+        if arr[i][0] == x and arr[i][1] == y:
             spot = i
             return  spot
-    return -1 
+    else:
+        return -1 
 
 
 def student_av():
+    time.sleep(1)
     runing = True
     while runing:
         os.system('cls')
-        in_name = input(f"Please enter the student that you would grades for.\n:").capitalize()
-        search(Student_list,in_name)
-        if :
-            print(f"{Student_list[spot][0]}, {Student_list[spot][1]}\nGrade #1: {Student_list[spot][2]}\nGrade #2: {Student_list[spot][3]}\nGrade #3: {Student_list[spot][4]}\nGrade #4: {Student_list[spot][5]}")
+        in_name = input(f"Please enter the first name of the student that you would grades for.\n:").lower().capitalize()
+        time.sleep(.5)
+        os.system('cls')
+        in_name2 = input(f"Please enter the last name of the student that you would grades for.\n{in_name},:").lower().capitalize()
+        spot=search(Student_list,in_name, in_name2)
+        if spot != -1:
+            os.system('cls')
+            print(f"{Student_list[spot][1]}, {Student_list[spot][0]}\n\nGrade #1: {Student_list[spot][2]}\nGrade #2: {Student_list[spot][3]}\nGrade #3: {Student_list[spot][4]}\nGrade #4: {Student_list[spot][5]}")
+            total = (Student_list[spot][2] + Student_list[spot][3] + Student_list[spot][4] + Student_list[spot][5])/4
+            print(f"\n{Student_list[spot][0]}'s Course average is {total}\n")
+            time.sleep(1.5)
+            input("press [ENTER] to return to menu")
+            time.sleep(1.5)
+            os.system('cls')
             runing = False
         else:
             print("ERROR, Student not found")
@@ -102,6 +118,7 @@ def student_av():
         
         
 def Course_av():
+    time.sleep(1)
     os.system('cls')
     print("course average")
      
@@ -109,6 +126,7 @@ def Course_av():
 def exit_G():
     os.system('cls')
     print("See you next time")
+    time.sleep(1)
     exit()
 
 
