@@ -46,16 +46,17 @@ def add():
     running = True
     while running:
         print("[First name,Last name]")
-        new_name = input(f"\nPlease enter a new name\n:")
+        new_name = input(f"\nPlease enter a new name\n:").replace(" ", "").lower().capitalize()
         time.sleep(.5)
-        if new_name.isalpha():
+        new_name = new_name.split(",")
+        if len(new_name) != 2:
             os.system('cls')
             print("Please enter name properly")
+            pass
         else:
-            new_name = new_name.split(",")
             grades()
             Student_list.append(
-                [f"{new_name[0].lower().capitalize()}", f"{new_name[1].lower().capitalize()}", int(results[0]), int(results[1]), int(results[2]),
+                [f"{new_name[0]}", f"{new_name[1]}", int(results[0]), int(results[1]), int(results[2]),
                     int(results[3])])
             os.system('cls')
             print("Successfully Added A Student\n")
@@ -118,9 +119,20 @@ def student_av():
         
         
 def Course_av():
+    grad1, grad2, grad3, grad4 = [],[],[],[]
     time.sleep(1)
     os.system('cls')
-    print("course average")
+    for students in range(len(Student_list)):
+        grad1.append(Student_list[students][2])
+        grad2.append(Student_list[students][3])
+        grad3.append(Student_list[students][4])
+        grad4.append(Student_list[students][5])
+    print(f"Course Averages:\n\n Course 1:      {'{0:.1f}'.format(sum(grad1)/len(grad1))}\nGrades: {', '.join(str(e) for e in grad1)}")
+    print(f"\n\n Course 2:      {'{0:.1f}'.format(sum(grad2)/len(grad2))}\nGrades: {', '.join(str(e) for e in grad2)}")
+    print(f"\n\n Course 3:      {'{0:.1f}'.format(sum(grad3)/len(grad3))}\nGrades: {', '.join(str(e) for e in grad3)}")
+    print(f"\n\n Course 4:      {'{0:.1f}'.format(sum(grad4)/len(grad4))}\nGrades: {', '.join(str(e) for e in grad4)}")
+    os.system('cls')
+    input("Press [Enter] to return to menu")
      
 
 def exit_G():
