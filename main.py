@@ -2,13 +2,58 @@
 # Feb 21 2021
 # Student grade program
 
-import os, time             # imports
+import os, time, sqlite3   # imports
+
+
+def create_connection(db_file):
+    #create a database connection to the SQLite database
+    #return: Connection object or None
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except Exception as e:
+        print(e)
+    return conn
+connection = create_connection('list.db')
+
+def insert_db(conn,table, columns,data):
+    col = ",".join(columns)
+    fill = tuple(data)
+    unknow=["?"]*len(columns)
+    x=",".join(unknow)
+    sql = f''' INSERT INTO {table} ({col}) VALUES({x})'''
+    conn.execute(sql,fill)
+    conn.commit()
+
+
+def create_table(conn,table, columns):
+    col = ",".join(columns)
+    sql = f'''CREATE TABLE IF NOT EXISTS {table}( id INTEGER PRIMARY KEY, {col});'''
+    conn.execute(sql)
+
+
+def select_db(conn,table,column=None,what_to_find=None):
+    if not column==None and not what_to_find==None:
+        sql=f'''SELECT * FROM {table} WHERE {column} =?'''
+        #where 4 is the id i am looking for
+        return conn.execute(sql,(what_to_find,))
+    else:
+        sql =f"SELECT * from {table}"
+        return conn.execute(sql)
+    
+
+def delete_db(conn,table,column,what_to_remove):
+    sql=f'''DELETE FROM {table} WHERE {column} = ?''',(what_to_remove,)
+    conn.execute(sql)
+    conn.commit()  
+
 
 
 Student_list = [["Dylan", "Baker", 98, 90, 92, 93], ["Dave", "Johnson", 67, 86, 74, 93],         # starting students
                 ["Jacob", "Kakowski", 73, 59, 64, 83], ["Josh", "Hotter", 51, 57, 53, 99],
                 ["Erik", "Lagsaway", 100, 100, 100, 100]] 
-    
+list= self.get_from_db()  
+new_list = [list(ele) for ele in list]
 
 def grade_che(resu):            # check if grades are between 0-100
     l = range(0, 101)
@@ -142,7 +187,7 @@ def exit_G():       #exit program function
 
 
 menus = {"1": add, "2": student_list, "3": student_av, "4": Course_av, "5": exit_G}             #dictonary to call functions
-while True:
+while True:         # menu loop
     print(" '1' | To Add Students")
     print(" '2' | To View The List")
     print(" '3' | To View The Student Averages")        #option of functions
