@@ -179,20 +179,20 @@ def student_av():           #check for student average
         
 def Course_av():            # course averages function
     grad1, grad2, grad3, grad4 = [],[],[],[]
+    Student_list = list(map(list,select_db(connection,"Students").fetchall()))
     time.sleep(1)
     os.system('cls')
     for students in range(len(Student_list)):
-        grad1.append(Student_list[students][2])
-        grad2.append(Student_list[students][3])     #adding grades to course lists
-        grad3.append(Student_list[students][4])
-        grad4.append(Student_list[students][5])
+        grad1.append(Student_list[students][3])
+        grad2.append(Student_list[students][4])     #adding grades to course lists
+        grad3.append(Student_list[students][5])
+        grad4.append(Student_list[students][6])
     print(f"Course Averages:\n\n Course 1:      {'{0:.1f}'.format(sum(grad1)/len(grad1))}\nGrades: {', '.join(str(e) for e in grad1)}")
     print(f"\n\n Course 2:      {'{0:.1f}'.format(sum(grad2)/len(grad2))}\nGrades: {', '.join(str(e) for e in grad2)}")
     print(f"\n\n Course 3:      {'{0:.1f}'.format(sum(grad3)/len(grad3))}\nGrades: {', '.join(str(e) for e in grad3)}")     #printing grades and average
     print(f"\n\n Course 4:      {'{0:.1f}'.format(sum(grad4)/len(grad4))}\nGrades: {', '.join(str(e) for e in grad4)}")
-    os.system('cls')
     input("Press [Enter] to return to menu")
-     
+    os.system('cls')
 
 def exit_G():       #exit program function
     os.system('cls')
