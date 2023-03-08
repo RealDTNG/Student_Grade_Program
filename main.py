@@ -14,7 +14,7 @@ def create_connection(db_file):
     except Exception as e:
         print(e)
     return conn
-connection = create_connection('list.db')
+
 
 def insert_db(conn,table, columns,data):
     col = ",".join(columns)
@@ -34,6 +34,7 @@ def create_table(conn,table, columns):
 
 def select_db(conn,table,column=None,what_to_find=None):
     if not column==None and not what_to_find==None:
+        sql="SELECT * FROM {} WHERE driverID=? AND accepted=?"
         sql=f'''SELECT * FROM {table} WHERE {column} =?'''
         #where 4 is the id i am looking for
         return conn.execute(sql,(what_to_find,))
@@ -41,6 +42,9 @@ def select_db(conn,table,column=None,what_to_find=None):
         sql =f"SELECT * from {table}"
         return conn.execute(sql)
     
+def select__db_f_l(conn,table,first_name,last_name):
+    sql=f"SELECT * FROM {table} WHERE first=? AND last=?"
+    return conn.execute(sql,(first_name,last_name)) 
 
 def delete_db(conn,table,column,what_to_remove):
     sql=f'''DELETE FROM {table} WHERE {column} = ?''',(what_to_remove,)
@@ -48,12 +52,18 @@ def delete_db(conn,table,column,what_to_remove):
     conn.commit()  
 
 
+connection = create_connection('list.db')
 
-Student_list = [["Dylan", "Baker", 98, 90, 92, 93], ["Dave", "Johnson", 67, 86, 74, 93],         # starting students
-                ["Jacob", "Kakowski", 73, 59, 64, 83], ["Josh", "Hotter", 51, 57, 53, 99],
-                ["Erik", "Lagsaway", 100, 100, 100, 100]] 
-list= self.get_from_db()  
-new_list = [list(ele) for ele in list]
+
+create_table(connection,"Students",["first TEXT", "last TEXT","grade1 INTEGER","grade2 INTEGER","grade3 INTEGER","grade4 INTEGER"])  
+
+                        #table name         columns         data
+#insert_db(connection,"Students",["first","last","grade1","grade2","grade3","grade4"],["Dylan","Baker", 98, 90, 92, 93])
+
+#Student_list = [["Dylan", "Baker", 98, 90, 92, 93], ["Dave", "Johnson", 67, 86, 74, 93],         # starting students
+#                ["Jacob", "Kakowski", 73, 59, 64, 83], ["Josh", "Hotter", 51, 57, 53, 99],
+#                ["Erik", "Lagsaway", 100, 100, 100, 100]] 
+
 
 def grade_che(resu):            # check if grades are between 0-100
     l = range(0, 101)
@@ -99,9 +109,7 @@ def add():          # function to add students
             pass
         else:
             grades()            # add students grades if name is valid
-            Student_list.append(            #add new student to list
-                [f"{new_name[0]}", f"{new_name[1]}", int(results[0]), int(results[1]), int(results[2]),
-                    int(results[3])])
+            insert_db(connection,"Students",["first","last","grade1","grade2","grade3","grade4"],[f"{new_name[0]}", f"{new_name[1]}", int(results[0]), int(results[1]), int(results[2]), int(results[3])])
             os.system('cls')
             print("Successfully Added A Student\n")
             running = False             # end loop to return to menu
@@ -114,10 +122,11 @@ def student_list():              #view student list
     time.sleep(1)
     os.system('cls') 
     m_leng = 0
-    for firstn, lastn, gr1, gr2, gr3, gr4 in Student_list:          #things in student list
+    Student_list =select_db(connection,"Students").fetchall()
+    for id, firstn, lastn, gr1, gr2, gr3, gr4 in Student_list:          #things in student list
         if len(firstn + lastn) > m_leng:
             m_leng = len(firstn + lastn)
-    for firstn, lastn, gr1, gr2, gr3, gr4 in Student_list:
+    for id, firstn, lastn, gr1, gr2, gr3, gr4 in Student_list:
         print(f"{lastn}, {firstn}:{' ' * (m_leng + 5 - len(firstn + lastn))}{gr1}% {gr2}% {gr3}% {gr4}%")       #print each thing in list
     time.sleep(1)
     input("To Return To Menu Press [Enter]")
@@ -125,14 +134,13 @@ def student_list():              #view student list
     os.system('cls')
 
 
-def search(arr, x, y):          #search funtion
-    global spot
-    for i in range(len(arr)):
-        if arr[i][0] == x and arr[i][1] == y:       #check for first name and last name
-            spot = i
-            return  spot
+def search(x, y):          #search funtion
+    cursor = select__db_f_l(connection,"Students",x,y)
+    temp=cursor.fetchall()
+    if not temp:
+        return -1
     else:
-        return -1 
+        return temp
 
 
 def student_av():           #check for student average
@@ -140,26 +148,33 @@ def student_av():           #check for student average
     runing = True
     while runing:
         os.system('cls')
-        in_name = input(f"Please enter the first name of the student that you would grades for.\n:").lower().capitalize()
+        in_name = input(f"Please enter the first name of the student that you would grades for. Or press [Enter] to return to the menu.\n:").lower().capitalize()
         time.sleep(.5)
         os.system('cls')
+        if in_name == "":
+            runing = False
+            break
         in_name2 = input(f"Please enter the last name of the student that you would grades for.\n{in_name},:").lower().capitalize()  #format inputs
-        spot=search(Student_list,in_name, in_name2)
+        try:
+            spot = list(map(list, search(in_name, in_name2)))
+        except:
+             spot = search(in_name, in_name2)
+        
         if spot != -1:
             os.system('cls')
-            print(f"{Student_list[spot][1]}, {Student_list[spot][0]}\n\nGrade #1: {Student_list[spot][2]}\nGrade #2: {Student_list[spot][3]}\nGrade #3: {Student_list[spot][4]}\nGrade #4: {Student_list[spot][5]}")
-            total = (Student_list[spot][2] + Student_list[spot][3] + Student_list[spot][4] + Student_list[spot][5])/4
-            print(f"\n{Student_list[spot][0]}'s Course average is {total}\n")
-            time.sleep(1.5)
+            print(f"{spot[0][1]}, {spot[0][2]}\n\nGrade #1: {spot[0][3]}\nGrade #2: {spot[0][4]}\nGrade #3: {spot[0][5]}\nGrade #4: {spot[0][6]}")
+            total = (spot[0][3] + spot[0][4] + spot[0][5] + spot[0][6])/4
+            print(f"\n{spot[0][1]}'s Course average is {total}\n")
+            time.sleep(1)
             input("press [ENTER] to return to menu")
-            time.sleep(1.5)
+            time.sleep(1)
             os.system('cls')
             runing = False
         else:
             print("ERROR, Student not found")
             time.sleep(1)
             print("Please try again")
-            time.sleep(1.5)
+            time.sleep(1)
         
         
 def Course_av():            # course averages function
