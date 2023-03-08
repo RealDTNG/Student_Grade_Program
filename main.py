@@ -32,12 +32,12 @@ def create_table(conn,table, columns):
     conn.execute(sql)
 
 
-def select_db(conn,table,column=None,what_to_find=None):
-    if not column==None and not what_to_find==None:
-        sql="SELECT * FROM {} WHERE driverID=? AND accepted=?"
-        sql=f'''SELECT * FROM {table} WHERE {column} =?'''
+def select_db(conn,table,columns_and_data=None):
+    if not columns_and_data==None:
+        col = " AND ".join(columns_and_data)
+        sql=f'''SELECT * FROM {table} WHERE {col}'''
         #where 4 is the id i am looking for
-        return conn.execute(sql,(what_to_find,))
+        return conn.execute(sql)
     else:
         sql =f"SELECT * from {table}"
         return conn.execute(sql)
@@ -100,7 +100,7 @@ def add():          # function to add students
     running = True
     while running:          #loop
         print("[First name,Last name]")
-        new_name = input(f"\nPlease enter a new name\n:").replace(" ", "").lower().capitalize()
+        new_name = input(f"\nPlease enter a new name\n:").replace(" ", "")
         time.sleep(.5)
         new_name = new_name.split(",")          #make new_name into a list of first name and last name
         if len(new_name) != 2:          #check if it has a first name and last name
@@ -109,7 +109,7 @@ def add():          # function to add students
             pass
         else:
             grades()            # add students grades if name is valid
-            insert_db(connection,"Students",["first","last","grade1","grade2","grade3","grade4"],[f"{new_name[0]}", f"{new_name[1]}", int(results[0]), int(results[1]), int(results[2]), int(results[3])])
+            insert_db(connection,"Students",["first","last","grade1","grade2","grade3","grade4"],[f"{new_name[0].lower().capitalize()}", f"{new_name[1].lower().capitalize()}", int(results[0]), int(results[1]), int(results[2]), int(results[3])])
             os.system('cls')
             print("Successfully Added A Student\n")
             running = False             # end loop to return to menu
@@ -135,6 +135,7 @@ def student_list():              #view student list
 
 
 def search(x, y):          #search funtion
+    cursor = select_db(connection,"Students",[f"first='{x}'",f"lastname='{y}'"]).fetchall()
     cursor = select__db_f_l(connection,"Students",x,y)
     temp=cursor.fetchall()
     if not temp:
@@ -199,6 +200,7 @@ def exit_G():       #exit program function
     print("See you next time")      
     time.sleep(1)
     exit()
+
 
 
 menus = {"1": add, "2": student_list, "3": student_av, "4": Course_av, "5": exit_G}             #dictonary to call functions
