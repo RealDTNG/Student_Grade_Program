@@ -1,36 +1,35 @@
 import os, time, msvcrt
-
-def add():          # function to add students
-    time.sleep(1)
-    os.system('cls')
-    running = True
-    while running:          #loop
-        print("[First name,Last name]")
-        new_name = input(f"\nPlease enter a new name\n:").replace(" ", "")
-        time.sleep(.5)
-        new_name = new_name.split(",")          #make new_name into a list of first name and last name
-        if len(new_name) != 2:          #check if it has a first name and last name
-            os.system('cls')
-            print("Please enter name properly")
-            pass
-        else:
-            os.system('cls')
-            print("Successfully Added A Student\n")
-            running = False             # end loop to return to menu
-            time.sleep(2)
-            os.system('cls')
             
 def find():
+    
     time.sleep(1)
     os.system('cls')
+    
     running = True
-    fname = ""
+    fname = []
+    
     while running:
-        print(f"Sudents first name:{fname}{fname = msvcrt.getch()}")
+        temp_letter = ""
         
+        print(f"Press [Enter] to submit name\nSudents first name: [{''.join(fname)}]\n")
+        
+        temp_letter = msvcrt.getche()
+        
+        os.system('cls')
+        
+        if temp_letter == (b'\x08'):
+            try:
+                fname.pop()  
+            except:
+                os.system('cls')
+                print(f"ERROR\nThere Are No More Characters")
+                time.sleep(1)
+                os.system('cls')
+        elif temp_letter == (b'\r'):
+            running = False
+            print("Done")
+        else:
+            fname.append(temp_letter.decode('ASCII'))
             
-choice = msvcrt.getche()
-if choice.decode('ASCII') in menus:
-    menus[choice.decode('ASCII')]()            
-
-add()
+                  
+find()
