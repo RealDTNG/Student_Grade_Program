@@ -1,8 +1,9 @@
 # Dawson Hoyle
 # Feb 21 2021
 # Student grade program
+#one new sort and binary search
 
-import os, time, sqlite3   # imports
+import os, time, sqlite3, msvcrt   # imports
 
 
 def create_connection(db_file):
@@ -56,13 +57,7 @@ connection = create_connection('list.db')
 
 
 create_table(connection,"Students",["first TEXT", "last TEXT","grade1 INTEGER","grade2 INTEGER","grade3 INTEGER","grade4 INTEGER"])  
-
-                        #table name         columns         data
-#insert_db(connection,"Students",["first","last","grade1","grade2","grade3","grade4"],["Dylan","Baker", 98, 90, 92, 93])
-
-#Student_list = [["Dylan", "Baker", 98, 90, 92, 93], ["Dave", "Johnson", 67, 86, 74, 93],         # starting students
-#                ["Jacob", "Kakowski", 73, 59, 64, 83], ["Josh", "Hotter", 51, 57, 53, 99],
-#                ["Erik", "Lagsaway", 100, 100, 100, 100]] 
+create_table(connection,"People",["first TEXT", "last TEXT"])  
 
 
 def grade_che(resu):            # check if grades are between 0-100
@@ -188,10 +183,10 @@ def Course_av():            # course averages function
         grad2.append(Student_list[students][4])     #adding grades to course lists
         grad3.append(Student_list[students][5])
         grad4.append(Student_list[students][6])
-    print(f"Course Averages:\n\n Course 1:      {'{0:.1f}'.format(sum(grad1)/len(grad1))}\nGrades: {', '.join(str(e) for e in grad1)}")
-    print(f"\n\n Course 2:      {'{0:.1f}'.format(sum(grad2)/len(grad2))}\nGrades: {', '.join(str(e) for e in grad2)}")
-    print(f"\n\n Course 3:      {'{0:.1f}'.format(sum(grad3)/len(grad3))}\nGrades: {', '.join(str(e) for e in grad3)}")     #printing grades and average
-    print(f"\n\n Course 4:      {'{0:.1f}'.format(sum(grad4)/len(grad4))}\nGrades: {', '.join(str(e) for e in grad4)}")
+    print(f"Course Averages:\n\n Course 1 av:      {'{0:.1f}'.format(sum(grad1)/len(grad1))}\nGrades: {', '.join(str(e) for e in grad1)}")
+    print(f"\n\n Course 2 av:      {'{0:.1f}'.format(sum(grad2)/len(grad2))}\nGrades: {', '.join(str(e) for e in grad2)}")
+    print(f"\n\n Course 3 av:      {'{0:.1f}'.format(sum(grad3)/len(grad3))}\nGrades: {', '.join(str(e) for e in grad3)}")     #printing grades and average
+    print(f"\n\n Course 4 av:      {'{0:.1f}'.format(sum(grad4)/len(grad4))}\nGrades: {', '.join(str(e) for e in grad4)}")
     input("Press [Enter] to return to menu")
     os.system('cls')
 
@@ -200,8 +195,7 @@ def exit_G():       #exit program function
     print("See you next time")      
     time.sleep(1)
     exit()
-
-
+    
 
 menus = {"1": add, "2": student_list, "3": student_av, "4": Course_av, "5": exit_G}             #dictonary to call functions
 while True:         # menu loop
@@ -210,9 +204,10 @@ while True:         # menu loop
     print(" '3' | To View The Student Averages")        #option of functions
     print(" '4' | To View The Course Average")
     print(" '5' | To Exit")
-    choice = input(f"Please pick a menu option\n\n:")
-    if choice in menus:
-        menus[choice]()     #use imput to call functions via dictonarry
+    print(f"Please pick a menu option:\n")
+    choice = msvcrt.getche()
+    if choice.decode('ASCII') in menus:
+        menus[choice.decode('ASCII')]()     #use imput to call functions via dictonarry
     else:
         os.system('cls')
         print("ERROR, Please enter a valid choice")     #check for valid choices
