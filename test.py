@@ -121,16 +121,16 @@ def find(blank, list):
     while running:
         temp_letter = ""
         spots = []
-        def run(wanted):
-            for s in list:
-                if (s.startswith(name)):
-                    spots.append(s) 
+        temp_name = ''.join(name).lower().capitalize()
+        for s in list:
+            if (s.startswith(temp_name):
+                spots.append(s) 
         
         result = binary_search(list, 0, len(list)-1, name)  
         
-        print(f"Press [Enter] to submit name\nSudents {blank} name: [{''.join(name)}]\n")
-        run("")
-        print("")
+        print(f"Press [Enter] to submit name\nSudents {blank} name: [{''.join(name)}]\n\nOr Select a name below with the number ascosiated with it")
+        for i in spots
+            print(f"\n>i:{spots[i]}")
         temp_letter = msvcrt.getche()
         os.system('cls')
         if temp_letter == (b'\x08'):
