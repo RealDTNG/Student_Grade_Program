@@ -43,9 +43,16 @@ def select_db(conn,table,columns_and_data=None):
         sql =f"SELECT * from {table}"
         return conn.execute(sql)
     
+    
 def select__db_f_l(conn,table,first_name,last_name):
     sql=f"SELECT * FROM {table} WHERE first=? AND last=?"
     return conn.execute(sql,(first_name,last_name)) 
+
+
+def select__db_array(conn,table,name):
+    sql=f"SELECT {name} FROM {table}"
+    return conn.execute(sql) 
+
 
 def delete_db(conn,table,column,what_to_remove):
     sql=f'''DELETE FROM {table} WHERE {column} = ?''',(what_to_remove,)
@@ -54,10 +61,7 @@ def delete_db(conn,table,column,what_to_remove):
 
 
 connection = create_connection('list.db')
-
-
-create_table(connection,"Students",["first TEXT", "last TEXT","grade1 INTEGER","grade2 INTEGER","grade3 INTEGER","grade4 INTEGER"])  
-create_table(connection,"People",["first TEXT", "last TEXT"])  
+create_table(connection,"Students",["first TEXT", "last TEXT","grade1 INTEGER","grade2 INTEGER","grade3 INTEGER","grade4 INTEGER"])   
 
 
 def grade_che(resu):            # check if grades are between 0-100
@@ -90,7 +94,7 @@ def grades():           # user adds 4 valid grades
 
 
 def add():          # function to add students
-    time.sleep(1)
+    time.sleep(.5)
     os.system('cls')
     running = True
     while running:          #loop
@@ -114,7 +118,7 @@ def add():          # function to add students
 
 
 def student_list():              #view student list
-    time.sleep(1)
+    time.sleep(.5)
     os.system('cls') 
     m_leng = 0
     Student_list =select_db(connection,"Students").fetchall()
@@ -125,7 +129,7 @@ def student_list():              #view student list
         print(f"{lastn}, {firstn}:{' ' * (m_leng + 5 - len(firstn + lastn))}{gr1}% {gr2}% {gr3}% {gr4}%")       #print each thing in list
     time.sleep(1)
     input("To Return To Menu Press [Enter]")
-    time.sleep(1)
+    time.sleep(.5)
     os.system('cls')
 
 
@@ -140,7 +144,7 @@ def search(x, y):          #search funtion
 
 
 def student_av():           #check for student average
-    time.sleep(1)
+    time.sleep(.5)
     runing = True
     while runing:
         os.system('cls')
@@ -176,7 +180,7 @@ def student_av():           #check for student average
 def Course_av():            # course averages function
     grad1, grad2, grad3, grad4 = [],[],[],[]
     Student_list = list(map(list,select_db(connection,"Students").fetchall()))
-    time.sleep(1)
+    time.sleep(.5)
     os.system('cls')
     for students in range(len(Student_list)):
         grad1.append(Student_list[students][3])
