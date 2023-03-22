@@ -47,6 +47,11 @@ def select__db_array(conn,table,name):
     sql=f"SELECT {name} FROM {table}"
     return conn.execute(sql) 
 
+def tuple_list(list): 
+    new_list = []
+    for element in list:
+        new_list.append(element[0])
+    return new_list
 
 def delete_db(conn,table,column,what_to_remove):
     sql=f'''DELETE FROM {table} WHERE {column} = ?''',(what_to_remove,)
@@ -82,34 +87,26 @@ def bubbleSort(arr):
             # can just exit the main loop.
             return
         
-        
-first_names = select__db_array(connection,"Students","first")
-last_names = select__db_array(connection,"Students","last")        
-sortf =bubbleSort(first_names)
-sortl = bubbleSort(last_names)
+           
+    
+first_names = tuple_list(list(select__db_array(connection,"Students","first").fetchall()))
+last_names = tuple_list(list(select__db_array(connection,"Students","last").fetchall()))
+sortf = first_names.copy()
+sortl = last_names.copy()
+bubbleSort(sortf)
+bubbleSort(sortl)
 
-def binary_search(arr, low, high, x, output):
- 
-    # Check base case
+
+def binary_search(arr, low, high, x):
     if high >= low:
- 
         mid = (high + low) // 2
- 
-        # If element is present at the middle itself
-        if arr[mid] == x:
+        if arr[mid] == x or arr[mid].startswith(x):
             return mid
- 
-        # If element is smaller than mid, then it can only
-        # be present in left subarray
         elif arr[mid] > x:
             return binary_search(arr, low, mid - 1, x)
- 
-        # Else the element can only be present in right subarray
         else:
             return binary_search(arr, mid + 1, high, x)
- 
     else:
-        # Element is not present in the array
         return -1
             
             
@@ -119,12 +116,29 @@ def find(blank, list):
     running = True
     name = []
     while running:
+        temp_name = ''.join(name)
+        temp_list = list.copy()
         temp_letter = ""
         spots = []
+        serching = True
+        trys = 0
+        while serching:
+            trys += 1
+            result = binary_search(temp_list, 0, len(temp_list)-1,''.join(temp_name))
             if result == -1:
-        print(f"Press [Enter] to submit name\nSudents {blank} name: [{''.join(name)}]\n\nOr Select a name below with the number ascosiated with it")
-        for i in spots
-            print(f"\n>i:{spots[i]}")
+                serching = False
+            else:
+                spots.append(result + trys - 1)
+                temp_list.pop(result)
+        print(f"Press [Enter] to submit name\nSudents {blank} name: [{temp_name}]\n\nOr Select a name below with the number ascosiated with it")
+        name_spots = {}
+        for i in spots:
+            try:
+                if len(temp_name) != 0:
+                    print(f"\n>{i}:{list[spots[i]]}")
+                    name_spots[i]=spots[i]
+            except:
+                pass
         temp_letter = msvcrt.getche()
         os.system('cls')
         if temp_letter == (b'\x08'):
@@ -138,12 +152,16 @@ def find(blank, list):
         elif temp_letter == (b'\r'):
             running = False
             print("Done")
-            return ''.join(name).lower().capitalize()
+            return temp_name.lower().capitalize()
+        elif temp_letter.decode('ASCII') in name_spots:
+            running = False
+            temp_name = f"{list[spots[temp_letter.decode('ASCII')]]}"
         else:
             name.append(temp_letter.decode('ASCII'))
             
                 
-first = find("First")
-last = find("Last")
+first = find("First",sortf)
+#last = find("Last",sortl)
 os.system('cls')
-print(f"First name: {first}\nLast name: {last}")
+print(f"The First Name Is:  {first}")
+input("Press [Enter] to end the")

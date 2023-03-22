@@ -134,7 +134,6 @@ def student_list():              #view student list
 
 
 def search(x, y):          #search funtion
-    cursor = select_db(connection,"Students",[f"first='{x}'",f"lastname='{y}'"]).fetchall()
     cursor = select__db_f_l(connection,"Students",x,y)
     temp=cursor.fetchall()
     if not temp:
@@ -208,10 +207,9 @@ while True:         # menu loop
     print(" '3' | To View The Student Averages")        #option of functions
     print(" '4' | To View The Course Average")
     print(" '5' | To Exit")
-    print(f"Please pick a menu option:\n")
-    choice = msvcrt.getche()
-    if choice.decode('ASCII') in menus:
-        menus[choice.decode('ASCII')]()     #use imput to call functions via dictonarry
+    choice = input(f"Please pick a menu option:\n")
+    if choice in menus:
+        menus[choice]()     #use imput to call functions via dictonarry
     else:
         os.system('cls')
         print("ERROR, Please enter a valid choice")     #check for valid choices
