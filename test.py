@@ -65,29 +65,15 @@ create_table(connection,"Students",["first TEXT", "last TEXT","grade1 INTEGER","
 
 def bubbleSort(arr):
     n = len(arr)
-    # optimize code, so if the array is already sorted, it doesn't need
-    # to go through the entire process
     swapped = False
-    # Traverse through all array elements
     for i in range(n-1):
-        # range(n) also work but outer loop will
-        # repeat one time more than needed.
-        # Last i elements are already in place
         for j in range(0, n-i-1):
- 
-            # traverse the array from 0 to n-i-1
-            # Swap if the element found is greater
-            # than the next element
             if arr[j] > arr[j + 1]:
                 swapped = True
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
-         
         if not swapped:
-            # if we haven't needed to make a single swap, we
-            # can just exit the main loop.
             return
-        
-           
+          
     
 first_names = tuple_list(list(select__db_array(connection,"Students","first").fetchall()))
 last_names = tuple_list(list(select__db_array(connection,"Students","last").fetchall()))
@@ -117,21 +103,15 @@ def find(blank, list):
     name = []
     while running:
         temp_name = ''.join(name)
-        temp_list = list.copy()
         temp_letter = ""
         spots = []
-        serching = True
-        trys = 0
-        while serching:
-            trys += 1
-            result = binary_search(temp_list, 0, len(temp_list)-1,''.join(temp_name))
-            if result == -1:
-                serching = False
-            else:
-                spots.append(result + trys - 1)
-                temp_list.pop(result)
         print(f"Press [Enter] to submit name\nSudents {blank} name: [{temp_name}]\n\nOr Select a name below with the number ascosiated with it")
         name_spots = {}
+        times = -1
+        for s in list:
+            times += 1
+            if (s.startswith(temp_name)):
+                spots.append(times)
         for i in spots:
             try:
                 if len(temp_name) != 0:
@@ -151,7 +131,22 @@ def find(blank, list):
                 os.system('cls')
         elif temp_letter == (b'\r'):
             running = False
-            print("Done")
+            print("Serching.")
+            time.sleep(.25) 
+            os.system('cls')
+            print("Serching..")
+            time.sleep(.25)
+            os.system('cls')
+            print("Serching...")
+            time.sleep(.25)
+            os.system('cls')
+            result = binary_search(list, 0, len(list)-1,''.join(temp_name))
+            if result == -1:
+                print("That name is not in the database!")
+                input("Press [Enter] to return to start")
+            else:
+                print("That student is in the database!")
+                input("Press [Enter] to return to start")
             return temp_name.lower().capitalize()
         elif temp_letter.decode('ASCII') in name_spots:
             running = False
@@ -159,9 +154,7 @@ def find(blank, list):
         else:
             name.append(temp_letter.decode('ASCII'))
             
-                
-first = find("First",sortf)
-#last = find("Last",sortl)
-os.system('cls')
-print(f"The First Name Is:  {first}")
-input("Press [Enter] to end the")
+while True:
+    os.system('cls')
+    input("Press [Enter] to search for a student")
+    first = find("First",sortf)
