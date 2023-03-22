@@ -86,9 +86,9 @@ def bubbleSort(arr):
 first_names = select__db_array(connection,"Students","first")
 last_names = select__db_array(connection,"Students","last")        
 sortf =bubbleSort(first_names)
-sortl =bubbleSort(last_names)
+sortl = bubbleSort(last_names)
 
-def binary_search(arr, low, high, x):
+def binary_search(arr, low, high, x, output):
  
     # Check base case
     if high >= low:
@@ -121,13 +121,7 @@ def find(blank, list):
     while running:
         temp_letter = ""
         spots = []
-        temp_name = ''.join(name).lower().capitalize()
-        for s in list:
-            if (s.startswith(temp_name):
-                spots.append(s) 
-        
-        result = binary_search(list, 0, len(list)-1, name)  
-        
+            if result == -1:
         print(f"Press [Enter] to submit name\nSudents {blank} name: [{''.join(name)}]\n\nOr Select a name below with the number ascosiated with it")
         for i in spots
             print(f"\n>i:{spots[i]}")
