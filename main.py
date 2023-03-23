@@ -201,6 +201,7 @@ def search():
     time.sleep(0.5)
     os.system('cls')
 
+
 def exit_G():       #exit program function
     os.system('cls')
     print("See you next time")      
