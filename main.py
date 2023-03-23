@@ -194,10 +194,12 @@ def Course_av():            # course averages function
     os.system('cls')
     
     
-def serch():
+def search():
     time.sleep(0.5)
     os.system('cls')
     search_and_sort.find()
+    time.sleep(0.5)
+    os.system('cls')
 
 def exit_G():       #exit program function
     os.system('cls')
