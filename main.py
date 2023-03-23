@@ -3,7 +3,7 @@
 # Student grade program
 #one new sort and binary search
 
-import os, time, sqlite3   # imports
+import os, time, sqlite3, search_and_sort   # imports
 
 
 def create_connection(db_file):
@@ -192,6 +192,12 @@ def Course_av():            # course averages function
     print(f"\n\n Course 4 av:      {'{0:.1f}'.format(sum(grad4)/len(grad4))}\nGrades: {', '.join(str(e) for e in grad4)}")
     input("Press [Enter] to return to menu")
     os.system('cls')
+    
+    
+def serch():
+    time.sleep(0.5)
+    os.system('cls')
+    search_and_sort.find()
 
 def exit_G():       #exit program function
     os.system('cls')
@@ -200,13 +206,14 @@ def exit_G():       #exit program function
     exit()
     
 
-menus = {"1": add, "2": student_list, "3": student_av, "4": Course_av, "5": exit_G}             #dictonary to call functions
+menus = {"1": add, "2": student_list, "3": student_av, "4": Course_av,"5":search, "6": exit_G}             #dictonary to call functions
 while True:         # menu loop
     print(" '1' | To Add Students")
     print(" '2' | To View The List")
     print(" '3' | To View The Student Averages")        #option of functions
     print(" '4' | To View The Course Average")
-    print(" '5' | To Exit")
+    print(" '5' | To Serch For Students")
+    print(" '6' | To Exit")
     choice = input(f"Please pick a menu option:\n")
     if choice in menus:
         menus[choice]()     #use imput to call functions via dictonarry

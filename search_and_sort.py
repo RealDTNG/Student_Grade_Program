@@ -170,8 +170,3 @@ def find():
         else:
             name.append(temp_letter.decode('ASCII'))
             
-            
-while True:
-    os.system('cls')
-    input("Press [Enter] to search for a student")
-    find()
