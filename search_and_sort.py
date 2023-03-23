@@ -47,11 +47,13 @@ def select__db_array(conn,table,name):
     sql=f"SELECT {name} FROM {table}"
     return conn.execute(sql) 
 
+
 def tuple_list(list): 
     new_list = []
     for element in list:
         new_list.append(element[0])
     return new_list
+
 
 def delete_db(conn,table,column,what_to_remove):
     sql=f'''DELETE FROM {table} WHERE {column} = ?''',(what_to_remove,)
@@ -77,49 +79,56 @@ def bubbleSort(arr):
     
 first_names = tuple_list(list(select__db_array(connection,"Students","first").fetchall()))
 last_names = tuple_list(list(select__db_array(connection,"Students","last").fetchall()))
-sortf = first_names.copy()
-sortl = last_names.copy()
-bubbleSort(sortf)
-bubbleSort(sortl)
+all_names = [[]]
+count = -1
+for f in first_names:
+    count += 1
+    all_names.append([first_names[count],last_names[count]])
+    
+all_names.pop(0)
+
+bubbleSort(all_names)
 
 
-def binary_search(arr, low, high, x):
+def binary_search(arr, low, high, x, spot_number):
     if high >= low:
         mid = (high + low) // 2
-        if arr[mid] == x or arr[mid].startswith(x):
+        if arr[mid][spot_number] == x:
             return mid
-        elif arr[mid] > x:
-            return binary_search(arr, low, mid - 1, x)
+        elif arr[mid][spot_number] > x:
+            return binary_search(arr, low, mid - 1, x, spot_number)
         else:
-            return binary_search(arr, mid + 1, high, x)
+            return binary_search(arr, mid + 1, high, x, spot_number)
     else:
         return -1
             
             
-def find(blank, list):
+def find():
     time.sleep(1)
     os.system('cls')
     running = True
     name = []
     while running:
-        temp_name = ''.join(name)
+        temp_name = ''.join(name).lower().capitalize()
         temp_letter = ""
         spots = []
-        print(f"Press [Enter] to submit name\nSudents {blank} name: [{temp_name}]\n\nOr Select a name below with the number ascosiated with it")
-        name_spots = {}
+        name_spots = {"-1":-2}
+        print(f"Press [Enter] to submit name\nSudents first name: [{temp_name}]\n\nOr Select a name below with the number ascosiated with it")
         times = -1
-        for s in list:
+        for s, l in all_names:
             times += 1
-            if (s.startswith(temp_name)):
+            if (s.startswith(f"{temp_name}")):
                 spots.append(times)
+        times = 0
         for i in spots:
             try:
                 if len(temp_name) != 0:
-                    print(f"\n>{i}:{list[spots[i]]}")
-                    name_spots[i]=spots[i]
+                    times += 1
+                    print(f"\n>{times}:{all_names[i][0]}  {all_names[i][1]}")
+                    name_spots[f"{times}"] = i
             except:
                 pass
-        temp_letter = msvcrt.getche()
+        temp_letter = msvcrt.getch()
         os.system('cls')
         if temp_letter == (b'\x08'):
             try:
@@ -140,7 +149,7 @@ def find(blank, list):
             print("Serching...")
             time.sleep(.25)
             os.system('cls')
-            result = binary_search(list, 0, len(list)-1,''.join(temp_name))
+            result = binary_search(all_names, 0, len(all_names)-1,temp_name, 0)
             if result == -1:
                 print("That name is not in the database!")
                 input("Press [Enter] to return to start")
@@ -148,13 +157,16 @@ def find(blank, list):
                 print("That student is in the database!")
                 input("Press [Enter] to return to start")
             return temp_name.lower().capitalize()
-        elif temp_letter.decode('ASCII') in name_spots:
+        elif (temp_letter.decode('ASCII')) in name_spots:
             running = False
-            temp_name = f"{list[spots[temp_letter.decode('ASCII')]]}"
+            print(f"{all_names[name_spots[str(temp_letter.decode('ASCII'))]][0]} is in the list")
+            time.sleep(2)
+            temp_name = f"{all_names[name_spots[str(temp_letter.decode('ASCII'))]][0]}"
         else:
             name.append(temp_letter.decode('ASCII'))
+            
             
 while True:
     os.system('cls')
     input("Press [Enter] to search for a student")
-    first = find("First",sortf)
+    find()

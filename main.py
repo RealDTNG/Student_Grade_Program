@@ -3,7 +3,7 @@
 # Student grade program
 #one new sort and binary search
 
-import os, time, sqlite3, msvcrt   # imports
+import os, time, sqlite3   # imports
 
 
 def create_connection(db_file):
@@ -43,7 +43,8 @@ def select_db(conn,table,columns_and_data=None):
         sql =f"SELECT * from {table}"
         return conn.execute(sql)
     
-    
+
+  
 def select__db_f_l(conn,table,first_name,last_name):
     sql=f"SELECT * FROM {table} WHERE first=? AND last=?"
     return conn.execute(sql,(first_name,last_name)) 
@@ -70,7 +71,6 @@ def grade_che(resu):            # check if grades are between 0-100
         if int(i) not in l:
             return True
     return False
-
 
 def grades():           # user adds 4 valid grades
     os.system('cls')
